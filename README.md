@@ -1,13 +1,13 @@
 <div align="center">
-  <h1>discord-legal-music</h1>
+  <h1>Auris</h1>
   <p><strong>A self-hosted, legally-clean music bot library for discord.js.</strong></p>
   <p><i>Code. Create. Conquer. — Brought to you by Omnikon</i></p>
 
   <p>
-    <a href="https://github.com/Omnikon/discord-legal-music/actions"><img src="https://img.shields.io/github/actions/workflow/status/Omnikon/discord-legal-music/test.yml?branch=main" alt="Build Status" /></a>
-    <a href="https://www.npmjs.com/package/discord-legal-music"><img src="https://img.shields.io/npm/v/discord-legal-music.svg" alt="npm version" /></a>
-    <a href="https://www.npmjs.com/package/discord-legal-music"><img src="https://img.shields.io/npm/dt/discord-legal-music.svg" alt="npm downloads" /></a>
-    <a href="https://github.com/Omnikon/discord-legal-music/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/discord-legal-music.svg" alt="License" /></a>
+    <a href="https://github.com/Omnikon-Org/Auris/actions"><img src="https://img.shields.io/github/actions/workflow/status/Omnikon-Org/Auris/ci.yml?branch=main" alt="Build Status" /></a>
+    <a href="https://www.npmjs.com/package/@omnikon/auris"><img src="https://img.shields.io/npm/v/@omnikon/auris.svg" alt="npm version" /></a>
+    <a href="https://www.npmjs.com/package/@omnikon/auris"><img src="https://img.shields.io/npm/dt/@omnikon/auris.svg" alt="npm downloads" /></a>
+    <a href="https://github.com/Omnikon-Org/Auris/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/@omnikon/auris.svg" alt="License" /></a>
     <img src="https://img.shields.io/badge/TypeScript-Ready-blue.svg" alt="TypeScript Ready" />
   </p>
 </div>
@@ -18,7 +18,7 @@
 
 Most Discord music bots scrape YouTube audio, violating YouTube's Terms of Service. This gets bots DMCA'd, IP-blocked, or banned completely. Existing alternatives are either abandoned or rely on fragile scraper libraries like `ytdl-core`.
 
-**`discord-legal-music`** solves this by providing a robust, legal-only audio pipeline. Built from the ground up without YouTube scraping, this library guarantees peace of mind while delivering a high-quality, feature-rich audio experience for your users.
+**`Auris`** solves this by providing a robust, legal-only audio pipeline. Built from the ground up without YouTube scraping, this library guarantees peace of mind while delivering a high-quality, feature-rich audio experience for your users.
 
 ---
 
@@ -47,7 +47,7 @@ Most Discord music bots scrape YouTube audio, violating YouTube's Terms of Servi
 
 ### 2. Install Package
 ```bash
-npm install discord-legal-music discord.js @discordjs/voice libsodium-wrappers
+npm install @omnikon/auris discord.js @discordjs/voice libsodium-wrappers
 ```
 
 ---
@@ -58,7 +58,7 @@ Integrate music into your existing `discord.js` bot instantly:
 
 ```typescript
 import { Client, GatewayIntentBits } from 'discord.js';
-import { Player, LocalFileAdapter } from 'discord-legal-music';
+import { Player, LocalFileAdapter } from '@omnikon/auris';
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates] });
 const player = new Player();
@@ -136,9 +136,9 @@ We've provided a fully functioning Discord bot showcasing all slash commands (`/
 <div align="center">
   <p><strong>Part of the Omnikon Ecosystem</strong></p>
   <p>
-    <a href="https://github.com/Omnikon/schema-cast">schema-cast</a> • 
-    <a href="https://github.com/Omnikon/PackVault">PackVault</a> • 
-    <a href="https://github.com/Omnikon/IssueSwipe">IssueSwipe</a> • 
-    <a href="https://github.com/Omnikon/Abyss">Abyss</a>
+    <a href="https://github.com/Omnikon-Org/schema-cast">schema-cast</a> • 
+    <a href="https://github.com/Omnikon-Org/PackVault">PackVault</a> • 
+    <a href="https://github.com/Omnikon-Org/IssueSwipe">IssueSwipe</a> • 
+    <a href="https://github.com/Omnikon-Org/Abyss">Abyss</a>
   </p>
 </div>

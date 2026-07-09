@@ -1,5 +1,5 @@
 {
-  "name": "discord-legal-music",
+  "name": "@omnikon/auris",
   "version": "1.0.0",
   "description": "A self-hosted, legally-clean music bot library for discord.js.",
   "main": "dist/index.js",
@@ -19,13 +19,19 @@
   },
   "keywords": [
     "discord",
-    "discord.js",
+    "discordjs",
     "music-bot",
     "discord-bot",
-    "audio-queue"
+    "audio-queue",
+    "nodejs",
+    "typescript"
   ],
-  "author": "Omnikon",
-  "license": "ISC",
+  "author": "Rishi Bhardwaj / Omnikon",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Omnikon-Org/Auris.git"
+  },
   "type": "commonjs",
   "dependencies": {
     "@discordjs/voice": "^0.19.2",
