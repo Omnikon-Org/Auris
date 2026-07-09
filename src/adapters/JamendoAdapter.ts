@@ -30,7 +30,7 @@ export class JamendoAdapter implements AudioSource {
       source: 'jamendo',
       author: trackInfo.artist_name,
       thumbnail: trackInfo.image,
-      adapterKey: this.name,
+      adapterKey: 'JamendoAdapter',
     };
   }
 
@@ -49,7 +49,7 @@ export class JamendoAdapter implements AudioSource {
       source: 'jamendo',
       author: trackInfo.artist_name,
       thumbnail: trackInfo.image,
-      adapterKey: this.name,
+      adapterKey: 'JamendoAdapter',
     };
   }
 

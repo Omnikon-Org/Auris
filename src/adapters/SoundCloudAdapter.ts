@@ -57,7 +57,7 @@ export class SoundCloudAdapter implements AudioSource {
       source: 'soundcloud',
       author: data.user?.username,
       thumbnail: data.artwork_url,
-      adapterKey: this.name,
+      adapterKey: 'SoundCloudAdapter',
     };
   }
 
