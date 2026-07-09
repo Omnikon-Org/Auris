@@ -127,31 +127,40 @@ export class Player extends EventEmitter {
       const oldState = this.audioPlayer.state.status;
       console.log(`AudioPlayer state before play():`, oldState);
 
-      this.currentResource = createAudioResource(stream as any);
+      let oggStream;
+      const ffmpegArgs = [
+        '-i', typeof stream === 'string' ? stream : 'pipe:0',
+        '-c:a', 'libopus',
+        '-b:a', '96k',
+        '-f', 'opus',
+        '-ar', '48000',
+        '-ac', '2',
+        '-filter:a', `volume=${this.volume / 100}`,
+        'pipe:1'
+      ];
+      
+      const ffProcess = require('child_process').spawn('ffmpeg', ffmpegArgs);
+      
+      if (typeof stream !== 'string') {
+        stream.pipe(ffProcess.stdin);
+      }
+      
+      oggStream = ffProcess.stdout;
+      
+      ffProcess.stderr.on('data', (d: Buffer) => {
+        // console.log(`[FFMPEG] ${d.toString().trim()}`);
+      });
+      ffProcess.on('error', (err: any) => console.log(`[FFMPEG ERROR]`, err));
+
+      this.currentResource = require('@discordjs/voice').createAudioResource(oggStream, {
+        inputType: require('@discordjs/voice').StreamType.OggOpus
+      });
 
       console.log(`[DEBUG] AudioResource created.`);
-      console.log(`[DEBUG] Pipeline edges configured:`, this.currentResource.edges.map(e => e.type).join(' -> '));
+      console.log(`[DEBUG] Pipeline edges configured:`, this.currentResource!.edges.map(e => e.type).join(' -> '));
 
-      if (this.currentResource.playStream) {
-        this.currentResource.playStream.on('error', (err) => console.log(`[INSTRUMENT] playStream error:`, err));
-      }
-
-      const ffmpegEdge = this.currentResource.edges.find(e => e.type === 'ffmpeg pcm' || e.type === 'ffmpeg ogg');
-      if (ffmpegEdge && (ffmpegEdge.transformer as any).process) {
-        const ffProcess = (ffmpegEdge.transformer as any).process;
-        ffProcess.stdout.on('data', () => console.log(`[DEBUG-FFMPEG] stdout emitted: data (chunk)`));
-        ffProcess.stderr.on('data', (data: Buffer) => {
-          console.log(`[DEBUG-FFMPEG] stderr: ${data.toString().trim()}`);
-        });
-        ffProcess.on('close', () => console.log(`[DEBUG-FFMPEG] emitted: close`));
-        ffProcess.on('error', (err: any) => console.log(`[DEBUG-FFMPEG] emitted: error:`, err));
-        ffProcess.on('exit', (code: number) => {
-          console.log(`[DEBUG-FFMPEG] exited with code: ${code}`);
-        });
-      }
-
-      if (this.currentResource.volume) {
-        this.currentResource.volume.setVolume(this.volume / 100);
+      if (this.currentResource!.playStream) {
+        this.currentResource!.playStream.on('error', (err: any) => console.log(`[INSTRUMENT] playStream error:`, err));
       }
 
       const conn = this.connectionManager.connection;
@@ -165,14 +174,14 @@ export class Player extends EventEmitter {
         }
       }
 
-      this.audioPlayer.play(this.currentResource);
+      this.audioPlayer.play(this.currentResource!);
       console.log(`[DEBUG] AudioPlayer.play() called.`);
       console.log(`[DEBUG] - Old state:`, oldState);
       console.log(`[DEBUG] - New state:`, this.audioPlayer.state.status);
-      console.log(`[DEBUG] - resource.playbackDuration:`, this.currentResource.playbackDuration);
-      console.log(`[DEBUG] - resource.started:`, this.currentResource.started);
-      console.log(`[DEBUG] - resource.metadata:`, this.currentResource.metadata);
-      console.log(`[DEBUG] - resource.volume exists:`, !!this.currentResource.volume);
+      console.log(`[DEBUG] - resource.playbackDuration:`, this.currentResource!.playbackDuration);
+      console.log(`[DEBUG] - resource.started:`, this.currentResource!.started);
+      console.log(`[DEBUG] - resource.metadata:`, this.currentResource!.metadata);
+      console.log(`[DEBUG] - resource.volume exists:`, !!this.currentResource!.volume);
 
       this.isPlaying = true;
       this.emit('trackStart', track);
