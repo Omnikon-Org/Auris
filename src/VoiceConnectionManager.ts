@@ -24,43 +24,34 @@ export class VoiceConnectionManager {
       return this.connection;
     }
 
-    console.log(`[DEBUG] Joining Voice Channel: ${channel.id}`);
     this.connection = joinVoiceChannel({
       channelId: channel.id,
       guildId: channel.guild.id,
       adapterCreator: channel.guild.voiceAdapterCreator as any,
       selfMute: false,
-      selfDeaf: true,
+      selfDeaf: false,
     });
 
     this.channelId = channel.id;
     this.guildId = channel.guild.id;
 
-    this.connection.on('stateChange', (oldState, newState) => {
-      console.log(`[DEBUG] VoiceConnection State Transition: ${oldState.status} -> ${newState.status}`);
-    });
-
     try {
       await entersState(this.connection, VoiceConnectionStatus.Ready, 20_000);
-      console.log(`[DEBUG] VoiceConnection reached Ready.`);
     } catch (error) {
-      console.error(`[DEBUG] VoiceConnection failed to reach Ready state:`, error);
       this.connection.destroy();
       this.connection = null;
       throw new Error('Failed to connect to voice channel.');
     }
 
     this.connection.on(VoiceConnectionStatus.Disconnected, async () => {
-      console.log(`[DEBUG] VoiceConnection Disconnected.`);
       try {
         await Promise.race([
           entersState(this.connection!, VoiceConnectionStatus.Signalling, 5_000),
           entersState(this.connection!, VoiceConnectionStatus.Connecting, 5_000),
         ]);
-        console.log(`[DEBUG] VoiceConnection attempting reconnect...`);
       } catch (error) {
-        console.log(`[DEBUG] VoiceConnection permanently disconnected.`);
-        this.destroy();
+        this.connection?.destroy();
+        this.connection = null;
       }
     });
 
@@ -69,10 +60,7 @@ export class VoiceConnectionManager {
 
   public subscribe(player: AudioPlayer) {
     if (this.connection) {
-      console.log(`[DEBUG] Subscribing AudioPlayer to VoiceConnection...`);
       this.connection.subscribe(player);
-    } else {
-      console.log(`[DEBUG] Cannot subscribe - no VoiceConnection exists!`);
     }
   }
 
