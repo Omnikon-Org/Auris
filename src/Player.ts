@@ -127,9 +127,7 @@ export class Player extends EventEmitter {
       const oldState = this.audioPlayer.state.status;
       console.log(`AudioPlayer state before play():`, oldState);
 
-      this.currentResource = createAudioResource(stream as any, {
-        inlineVolume: true,
-      });
+      this.currentResource = createAudioResource(stream as any);
 
       console.log(`[DEBUG] AudioResource created.`);
       console.log(`[DEBUG] Pipeline edges configured:`, this.currentResource.edges.map(e => e.type).join(' -> '));
